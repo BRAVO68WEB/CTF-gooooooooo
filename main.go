@@ -10,7 +10,14 @@ import (
 )
 
 func main() {
-	key := "thisis32bitlongpassphraseimusing"
+	key := iuwqeng() + weirkgnwoerng()
+
+	key += bdsfbdfbd() + asdasd()
+
+	key += fghjfhgjn() + sersdfsdcxv()
+
+	key += asdasdasd()
+
 	userPtr := flag.String("username", "user", "username of the decoder")
 	passPtr := flag.String("password", "IamNoob", "password of the decoder")
 
@@ -92,4 +99,39 @@ func CheckError(err error) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func iuwqeng() string {
+	str := "thisi"
+	return str
+}
+
+func weirkgnwoerng() string {
+	str := "s32"
+	return str
+}
+
+func bdsfbdfbd() string {
+	str := "bitlo"
+	return str
+}
+
+func asdasd() string {
+	str := "ngpass"
+	return str
+}
+
+func fghjfhgjn() string {
+	str := "phrase"
+	return str
+}
+
+func sersdfsdcxv() string {
+	str := "imusi"
+	return str
+}
+
+func asdasdasd() string {
+	str := "ng"
+	return str
 }
