@@ -1,16 +1,16 @@
 package main
 
 import (
-	"encoding/base64"
+	"crypto/aes"
 	"encoding/hex"
 	"flag"
 	"fmt"
 	"io"
-	"log"
 	"os"
 )
 
 func main() {
+	key := "thisis32bitlongpassphraseimusing"
 	userPtr := flag.String("username", "user", "username of the decoder")
 	passPtr := flag.String("password", "IamNoob", "password of the decoder")
 
@@ -48,20 +48,10 @@ func main() {
 				return
 			}
 
-			// Convert from hex to string
-			s, err := hex.DecodeString(str)
-			if err != nil {
-				log.Fatal(err)
-			}
+			// Decrypt from AES to string
+			depStr := DecryptAES([]byte(key), str)
 
-			// Decode the string from base64 to string
-			decoded, err := base64.StdEncoding.DecodeString(string(s))
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			var finalFlag = string(decoded)
-
+			var finalFlag = string(depStr)
 			// Print the flag to a file "flag.txt"
 			file, err := os.Create("flag.txt")
 
@@ -70,7 +60,7 @@ func main() {
 				return
 			}
 
-			l, err := file.WriteString(finalFlag)
+			l, err := file.WriteString("flag{" + finalFlag + "}")
 
 			if err != nil {
 				fmt.Println(err)
@@ -82,5 +72,24 @@ func main() {
 		}
 	} else {
 		fmt.Println("Nice try, " + *userPtr + "  but you are not the decoder")
+	}
+}
+
+func DecryptAES(key []byte, ct string) string {
+
+	ciphertext, _ := hex.DecodeString(ct)
+
+	c, err := aes.NewCipher(key)
+	CheckError(err)
+
+	pt := make([]byte, len(ciphertext))
+	c.Decrypt(pt, ciphertext)
+
+	return string(pt[:])
+}
+
+func CheckError(err error) {
+	if err != nil {
+		panic(err)
 	}
 }
